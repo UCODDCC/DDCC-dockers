@@ -1,7 +1,17 @@
 from ubuntu:18.04
+
 run apt update -y
 run apt upgrade -y
-run apt install g++ -y
-add ./code /code
-run g++ /code/main.cpp /code/mainHandler.cpp /code/Server.cpp -o /task
-cmd /task
+run apt install g++ cmake git -y
+
+workdir /
+run git clone https://github.com/UCODDCC/DDCC-containers-code.git
+
+run mkdir -p /app/build
+run cp -r /DDCC-containers-code/matrix/* /app
+
+workdir /app/build
+run cmake ..
+run make
+
+cmd /app/build/app
